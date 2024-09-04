@@ -1,12 +1,14 @@
 package cool.moveon.lmt.demo.service;
 
 import com.google.gson.Gson;
+import cool.moveon.lmt.demo.kafka.KafkaProduceService;
 import cool.moveon.lmt.demo.mapper.MessageMapper;
 import cool.moveon.lmt.demo.mapper.OrderMapper;
 import cool.moveon.lmt.demo.entity.Order;
 import cool.moveon.lmt.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -26,10 +28,12 @@ public class OrderService {
     private OrderMapper orderMapper;
     @Autowired
     private MessageMapper messageMapper;
+    @Autowired
+    private KafkaProduceService kafkaProduceService;
 
+    @Transactional
     public void createOrder() {
         Order order = new Order();
-        order.setId(1L);
         order.setUserId(1L);
         order.setProductId(1L);
         order.setAmount(BigDecimal.valueOf(9.9));
@@ -38,9 +42,9 @@ public class OrderService {
         int i = orderMapper.insert(order);
 
         Message message = new Message();
-        message.setId(1L);
-        message.setObjId(1L);
-        message.setMessageBody(new Gson().toJson(order));
+        message.setObjId(order.getId());
+        Gson gson = new Gson();
+        message.setMessageBody(gson.toJson(order));
         message.setStatus("PENDING");
         message.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
         messageMapper.insert(message);
