@@ -32,11 +32,10 @@ public class OrderService {
     private KafkaProduceService kafkaProduceService;
 
     @Transactional
-    public void createOrder() {
-        Order order = new Order();
-        order.setUserId(1L);
-        order.setProductId(1L);
-        order.setAmount(BigDecimal.valueOf(9.9));
+    public void createOrder(Order order) {
+//        order.setUserId(1L);
+//        order.setProductId(1L);
+//        order.setAmount(BigDecimal.valueOf(9.9));
         order.setStatus("send");
         order.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
         int i = orderMapper.insert(order);
