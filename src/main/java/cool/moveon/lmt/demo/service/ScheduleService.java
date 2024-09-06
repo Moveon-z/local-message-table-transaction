@@ -1,6 +1,7 @@
 package cool.moveon.lmt.demo.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.google.gson.Gson;
 import cool.moveon.lmt.demo.kafka.KafkaProduceService;
 import cool.moveon.lmt.demo.mapper.MessageMapper;
 import cool.moveon.lmt.model.Message;
@@ -21,13 +22,14 @@ public class ScheduleService {
     private KafkaProduceService kafkaProduceService;
 
     @Scheduled(initialDelay = 10000, fixedRate = 5000)
-    @Transactional
+    @Transactional(rollbackFor = RuntimeException.class)
     public void dispatchMessage() {
+        Gson gson = new Gson();
         QueryWrapper<Message> wrapper = new QueryWrapper<>();
         wrapper.eq("status", "PENDING");
         List<Message> messageList = messageMapper.selectList(wrapper);
         for (Message message : messageList) {
-            kafkaProduceService.sendMessage("test", message.getMessageBody());
+            kafkaProduceService.sendMessage("order-to-inventory", gson.toJson(message));
             message.setStatus("SENT");
             messageMapper.updateById(message);
         }

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://192.168.0.101:3306/test?useSSL=false
+    url: jdbc:mysql://101.132.108.250:13306/test?useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -8,9 +8,9 @@ spring:
       maximum-pool-size: 10
   kafka:
     bootstrap-servers:
-      - 192.168.0.107:9091
-      - 192.168.0.107:9092
-      - 192.168.0.107:9093
+      - 101.132.108.250:9091
+      - 101.132.108.250:9092
+      - 101.132.108.250:9093
     consumer:
       group-id: moveon
       auto-offset-reset: earliest

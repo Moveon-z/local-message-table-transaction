@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @MapperScan("cool.moveon.lmt.demo.mapper")
-@EnableScheduling
+//@EnableScheduling
 public class LocalMessageTableTransactionApplication {
 
     public static void main(String[] args) {

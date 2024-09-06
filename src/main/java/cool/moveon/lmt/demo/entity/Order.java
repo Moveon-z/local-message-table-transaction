@@ -45,6 +45,11 @@ public class Order {
     private BigDecimal unitPrice;
 
     /**
+     * 购买数量
+     */
+    private int purchaseNum;
+
+    /**
      * 订单状态
      * CREATED: 已创建
      * SENT: 已发送
